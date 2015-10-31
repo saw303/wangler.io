@@ -1,0 +1,6 @@
+title=About
+type=page
+status=published
+~~~~~~
+
+I am a Java & Groovy software craftsman living in Opfikon, Switzerland. I am working with http://www.adcubum.com[Adcubum] and I am father of one.
