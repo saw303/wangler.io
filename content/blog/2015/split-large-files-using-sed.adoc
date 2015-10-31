@@ -1,0 +1,14 @@
+title=Split large files using Sed
+date=2015-10-31
+type=post
+tags=blog, asciidoc
+status=published
+~~~~~~
+= Split large files using Sed
+Silvio Wangler
+2015-10-31
+
+[source,bash]
+----
+sed -n '5400,5623p' myLog.log
+----
