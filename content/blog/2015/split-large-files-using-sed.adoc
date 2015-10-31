@@ -8,7 +8,10 @@ status=published
 Silvio Wangler
 2015-10-31
 
-[source,bash]
-----
-sed -n '5400,5623p' myLog.log
-----
+In production log files can easily become large within no time. Many common editors cannot properly handle a large text file and therefore it usually takes quiet some time to browse through a large log file.
+
+If your working with Linux or Mac OS X `sed` is a wonderful tool to cut your large log file into pieces. Let's say you need to analyse a log file called `application.log` that contains the most interesting content between lines 5400 and 5623. The follow command line call will extract excately this range for you and print it to your `stout` which is your console.
+
+ sed -n '5400,5623p' application.log
+
+It might be handy to redirect the output to a new file by using `sed -n '5400,5623p' application.log > application5400-5623.log`.
