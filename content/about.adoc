@@ -3,4 +3,11 @@ type=page
 status=published
 ~~~~~~
 
-I am a Java & Groovy software craftsman living in Opfikon, Switzerland. I am working with http://www.adcubum.com[Adcubum] and I am father of one.
+I am a Java, Groovy & Grails software craftsman living in Opfikon, Switzerland. I am working with http://www.adcubum.com[Adcubum] and father of one.
+
+I am author of the following open source projects
+
+* https://github.com/saw303/dox[DOX] - a light weight document management system
+* https://github.com/saw303/grails-ic-alender[iCalendar Plugin for Grails 2 & 3]
+* https://github.com/saw303/grails-flyway[Flyway Plugin for Grails 2 & 3]
+* https://github.com/saw303/SwissPostCode[Plugin for Grails 2] - Provides a postcode database of Switzerland
