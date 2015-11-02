@@ -11,5 +11,7 @@
 	<p>${content.body}</p>
 
 	<hr />
+
+	<p>Tags: ${content.tags.collect {'<a href="/tags/'+ it +'.html">' + it + '</a>' }.join(', ')}</p>
 	
 <%include "footer.gsp"%>

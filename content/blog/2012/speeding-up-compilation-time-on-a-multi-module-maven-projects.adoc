@@ -1,7 +1,7 @@
 title=Speeding up compilation time on multi module Maven projects
 date=2012-05-02
 type=post
-tags=itext, tiff
+tags=maven, java
 status=published
 ~~~~~~
 I recently found a https://twitter.com/krosenvold/status/195856087688282113[tweet] by Kristian Rosenvold on Twitter talking about performance improvements on multi module Maven 2/3 projects. Our build process takes quiet an amount of time and therefore performance improvements always are very welcome on my company's software project.
