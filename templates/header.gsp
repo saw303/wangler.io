@@ -8,6 +8,7 @@
     <meta name="author" content="Silvio Wangler">
     <meta name="keywords" content="Silvio Wangler Groovy Java Spring Software">
     <meta name="generator" content="JBake">
+    <meta name="google" content="notranslate" />
 
     <!-- Le styles -->
     <link href="<%if (content.rootpath) {%>${content.rootpath}<% } else { %><% }%>css/bootstrap.min.css" rel="stylesheet">
