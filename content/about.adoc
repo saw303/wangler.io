@@ -3,7 +3,10 @@ type=page
 status=published
 ~~~~~~
 
-I am a Java, Groovy & Grails software craftsman living in Opfikon, Switzerland. I am working with http://www.adcubum.com[Adcubum] and father of one.
+
+image::saw.jpg[150,150,right]
+
+Hello and welcome. I am a Java, http://www.groovy-lang.org/[Groovy] & http://www.graiks.org/[Grails] software craftsman living in Opfikon, Switzerland. I am working with http://www.adcubum.com[Adcubum].
 
 I am author of the following open source projects
 
