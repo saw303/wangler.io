@@ -1,11 +1,11 @@
 title=Scan your documents and capture its content
 date=2013-04-03
 type=post
-tags=linux, pdf, tiff
+tags=linux, pdf, tiff, ubuntu
 status=published
 ~~~~~~
 
-Currently I am working on task to scan documents to PDFs and retrieve their content. This article explains how you do it if you do not have a searchable PDF. The following article will use Ubuntu Linux 12.10.
+Currently I am working on task to scan documents to PDFs and retrieve their content. This article explains how you do it if you do not have a searchable PDF. The following command have been evaluated on Ubuntu Linux 12.10 and will most likely work on any other Debian based distribution.
 
 === Step #1 - Install Tesseract
 
@@ -21,9 +21,9 @@ To do so I have use Libre Office Writer and saved the document as PDF. Make sure
 
 === Step #4 - Run Tesseract
 
-The following tells Tesseract to scan the TIFF called multipage-tiffg4.tif using an English dictionary and store the captured output in a file called multipage-tiffg4-ocr-capture.txt. The .txt is added by Tesseract itself.
+The following tells Tesseract to scan the TIFF called multipage-tiffg4.tif using an English dictionary and store the captured output in a file called `multipage-tiffg4-ocr-capture.txt`. The `.txt` was is added by Tesseract itself.
 
- tesseract multipage-tiffg4.tif multipage-tiffg4-ocr-capture -l eng
+ tesseract multipage-tiffg4.tif multipage-tiffg4-ocr-capture -l en
 
 === Step #5 - Review the result
 
