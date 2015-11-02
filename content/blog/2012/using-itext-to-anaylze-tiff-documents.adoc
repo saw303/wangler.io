@@ -1,0 +1,17 @@
+title=Using iText to analyze TIFF documetns
+date=2012-07-16
+type=post
+tags=itext, tiff
+status=published
+~~~~~~
+
+Recently I have learned that I can use http://itextpdf.com/[iText] to determine the number of pages from a single or multi page TIFF document. Here is how it works.
+
+[source,java]
+----
+private byte[] pdfContent;
+ 
+int numberOfPages = TiffImage.getNumberOfPages(new RandomAccessFileOrArray(pdfContent));
+----
+
+Isn't it simple?

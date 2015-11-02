@@ -1,0 +1,26 @@
+title=Speeding up compilation time on multi module Maven projects
+date=2012-05-02
+type=post
+tags=itext, tiff
+status=published
+~~~~~~
+I recently found a https://twitter.com/krosenvold/status/195856087688282113[tweet] by Kristian Rosenvold on Twitter talking about performance improvements on multi module Maven 2/3 projects. Our build process takes quiet an amount of time and therefore performance improvements always are very welcome on my company's software project.
+
+The tweet leads to a https://gist.github.com/krosenvold/2508909[Gist] on GitHub that informs new version of the Plexus compiler that is used by the Maven-Compiler-Plugin. Nice! So I applied the explicit dependency in my <root> pom.xml in the <pluginManagement> section (see the listing below).
+
+[source,xml]
+----
+<plugin>
+   <groupId>org.apache.maven.plugins</groupId>
+   <artifactId>maven-compiler-plugin</artifactId>
+   <dependencies>
+      <dependency>
+         <groupId>org.codehaus.plexus</groupId>
+         <artifactId>plexus-compiler-javac</artifactId>
+         <version>1.8.6</version>
+      </dependency>
+   </dependencies>
+</plugin>
+----
+
+Then I asked Jenkins to run the build several times and I was really surprised by the result. On my multi module project a full build consumes about 12-15 minutes. After applying that new Plexus version I managed to decrease the build time down to about 7-8 minutes. So the result is in my case about 30% - 45% performance improvement!

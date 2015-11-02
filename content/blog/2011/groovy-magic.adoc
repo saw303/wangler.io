@@ -1,0 +1,24 @@
+title=Groovy magic
+date=2011-12-30
+type=post
+tags=groovy
+status=published
+~~~~~~
+
+Groovy is just wonderful. Check out the following Groovy listing. With Groovy you easily can implement dynamic method calls.
+
+[source,groovy]
+----
+class WellThatIsGroovy {    
+    String name
+    Date bar
+}
+ 
+def x = 'name'
+def j = new WellThatIsGroovy(name : 'hzasdjkfhjk', bar: new Date())
+ 
+println j."${x}"
+println j.'bar'.format('dd.MM.yyyy HH:mm:ss')
+----
+
+Have a go with this script at the http://groovyconsole.appspot.com/script/614002[Groovy Web Console].
