@@ -1,0 +1,15 @@
+title=Debugging unit tests in a Gradle build
+date=2015-11-22
+type=post
+tags=gradle, java, debug
+status=published
+~~~~~~
+= Debugging unit tests in a Gradle build
+Silvio Wangler
+2015-11-22
+
+Have you ever been in need to analyse why a unit test is failing in your Gradle build but perfectly works in your IDE? No problem. Simply use Gradle in the *non daemon mode* and set the `org.gradle.debug` property to `true`.
+
+    gradle --no-daemon -Dorg.gradle.debug=true clean check
+
+After that set your breakpoints in your source code and attach your IDE debugger to the Gradle process.
