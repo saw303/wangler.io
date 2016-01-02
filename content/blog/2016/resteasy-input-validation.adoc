@@ -1,0 +1,147 @@
+title=RESTEasy Input Validation
+date=2016-01-02
+type=post
+tags=java, rest, resteasy
+status=published
+~~~~~~
+= RESTEasy Input Validation
+Silvio Wangler
+2016-01-02
+
+I am currently working on a project that provides a REST API based on http://resteasy.jboss.org/[RESTEasy]. The REST API uses metadata (options.json) to describe a resource. The following listing describes a simple resource `Person` that contains the attributes `id` and `name`. The attribute `name` defines a contrainst that its value has to contain at least 1 character and a maximum of 30 characters.
+
+
+[source,javascript]
+.options.json
+----
+{
+  "general": {
+    "description": "Person resource",
+    "majorVersion": 1,
+    "icon": "map",
+    "lifecycle": {
+      "deprecated": false,
+      "info": "This version is valid"
+    },
+    "x-route": "/:version/person/:entity"
+  },
+  "verbs": [
+    {
+      "verb": "POST",
+      "rel": "Add person",
+      "responseStates": [
+        {
+          "code": 200,
+          "message": "200 Ok",
+          "comment": "content in response body"
+        },
+        {
+          "code": 503,
+          "message": "503 Service Unavailable",
+          "comment": "Backend server eventually not reachable or to slow"
+        }
+      ],
+      "defaultRepresentation": "json",
+      "representations": [
+        {
+          "name": "json",
+          "comment": "",
+          "responseExample": "{...}",
+          "isDefault": true,
+          "mimetype": "application/json"
+        }
+      ],
+      "options": [
+      ],
+      "permissions": [
+        {
+          "name": "role-a",
+          "mode": "all",
+          "comment": ""
+        }
+      ]
+    }
+  ],
+  "fields": [
+    {
+      "name": "id",
+      "type": "uuid",
+      "options": null,
+      "mandatory": [],
+      "min": null,
+      "max": null,
+      "multiple": false,
+      "defaultValue": null,
+      "protected": [false],
+      "visible": true,
+      "sortable": true,
+      "scopeable": true,
+      "x-comment": "unique identifier"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "options": null,
+      "mandatory": ["POST"],
+      "min": 1,
+      "max": 30,
+      "multiple": false,
+      "defaultValue": null,
+      "protected": [false],
+      "visible": true,
+      "sortable": false,
+      "scopeable": false,
+      "x-comment": "The name of the person"
+    }
+  ],
+  "subresources": []
+}
+----
+
+Since the `options.json` allows us to define constraints on resource field level we had the requirement to validate REST request at runtime.
+
+== First approach - RESTEasy Filter or Interceptor
+
+The first thing that came in my mind was _why not using filters or interceptors to implement the request validation?_ So I started to investigate and learned that filters or interceptors http://stackoverflow.com/questions/16421131/how-can-i-read-the-json-in-a-post-put-in-a-resteasy-interceptor-for-validation[have not been invent for validation] in the first place.
+
+[quote, Bill Burke, RESTful Java with JAX-RS 2.0 - Second Edition]
+____
+While filters modify request or response headers, reader and writer interceptors deal with message bodies.
+____
+
+== Second approach - Use Bean Validation 1.1
+
+After reading the section http://docs.jboss.org/resteasy/docs/3.0.13.Final/userguide/html_single/index.html#Validation[Bean Validation] of the RESTEasy documentation it turned out that this is most likely the way to go. Here is how it works.
+
+First add the following additional RESTEasy dependency to your Gradle project.
+
+    compile "org.jboss.resteasy:resteasy-validator-provider-11:3.0.12.Final"
+
+Validation is then turned on automatically when RESTEasy detects `resteasy-validator-provider-11` within its classpath. Then use the annotation `ValidateRequest` to validate an HTTP request before your method gets called. In the case below I want every POST request on `/v1/person/` to be validated to make sure that the parameter `name` does not exceed the size of 30 characters before the method `addPerson` gets called
+
+[source,java]
+.options.json
+----
+package io.wangler.resteasy.example.validation;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.Response;
+
+@Path("/v1/person")
+public class PersonResource
+{
+
+    @POST
+    @ValidateRequest
+    public Response addPerson(@NotNull @Size(min=1, max=30) @FormParam("name") String name)
+    {
+        return Response.created().build();
+    }
+}
+----
+
+Et voilà. Your POST request gets validated by the Hibernate validator before the actual method `addPerson` gets called.
