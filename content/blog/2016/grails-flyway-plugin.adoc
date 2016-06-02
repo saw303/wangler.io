@@ -1,0 +1,32 @@
+title=Using Grails 3 Flyway Plugin for database migrations
+date=2016-02-29
+type=post
+tags=grails, flyway, database, migration
+status=published
+~~~~~~
+= Using Grails 3 Flyway Plugin for database migrations
+Silvio Wangler
+2016-02-29
+
+https://flywaydb.org/[Flyway] is an excellent tool to place database migrations into your Java application.
+It's easy to understand and to integrate in your application. Since your database is a part of your application Fly enables you
+to manage migration along with your source code.
+
+Recently I upgraded a Grails 2.5.x application to its successor Grails 3.1.1. And I had to upgrade the https://github.com/saw303/grails-flyway[Grails Flyway Plugin]
+in order to run with Grails 3.1.1. This blog post will introduce the plugin to you as a Grails developer.
+
+First of all you need to declare a runtime dependency in your `build.gradle`. In the following example uses `lastest.integration` that causes Gradle to always use the latest version of the plugin.
+
+    compile 'org.grails.plugins:grails-flyway:latest.integration'
+
+Next you need to configure the plugin in either your `application.yml` or `application.groovy`. This example uses YAML.
+
+
+```
+flyway:
+  enabled: false
+  locations: migration/db/mysql
+  baselineOnMigrate: true
+```
+
+The Grails Flyway plugin for Grails 3.x is available at the official plugin repository at https://bintray.com/saw303/plugins/org.grails.plugins%3Agrails-flyway/view[Bintray].
