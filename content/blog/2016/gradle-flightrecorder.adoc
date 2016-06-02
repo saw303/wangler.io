@@ -1,0 +1,34 @@
+title=Run Flightrecorder for your Gradle tests
+date=2016-06-22
+type=post
+tags=java, gradle, flightrecorder
+status=published
+~~~~~~
+= Run Flightrecorder for your Gradle tests
+Silvio Wangler
+2016-06-22
+
+Recently we where running into strange `OutOfMemoryErrors` while Gradle was executing our integration tests.
+In order to get a better insight on whats going wrong we decided let http://hirt.se/blog/?p=370[Java Flightrecorder] profile the test execution.
+
+All you need to do is to but the following snippet into your `build.gradle`. This will enable Flightrecorder and it will
+record the whole test execution and writes the result to a file called `build/dumponexit.jfr`.
+
+```
+test {
+      maxHeapSize = "2g"
+      jvmArgs += ["-XX:+UnlockCommercialFeatures", "-XX:+FlightRecorder"]
+
+      def jfrOptions = [
+              defaultrecording: true,
+              dumponexit      : true,
+              dumponexitpath  : "${project.buildDir}/dumponexit.jfr",
+              globalbuffersize: '10M',
+              disk            : true,
+              settings        : "${System.getProperty("java.home")}/lib/jfr/profile.jfc".toString()
+      ]
+      jvmArgs += ["-XX:FlightRecorderOptions=${jfrOptions.collect { k, v -> "$k=$v".toString() }.join(',')}"]
+  }
+```
+
+Hope that blog post helps.
