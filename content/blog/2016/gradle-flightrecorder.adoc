@@ -1,12 +1,12 @@
 title=Run Flightrecorder for your Gradle tests
-date=2016-06-22
+date=2016-05-22
 type=post
 tags=java, gradle, flightrecorder
 status=published
 ~~~~~~
 = Run Flightrecorder for your Gradle tests
 Silvio Wangler
-2016-06-22
+2016-05-22
 
 Recently we where running into strange `OutOfMemoryErrors` while Gradle was executing our integration tests.
 In order to get a better insight on whats going wrong we decided let http://hirt.se/blog/?p=370[Java Flightrecorder] profile the test execution.
