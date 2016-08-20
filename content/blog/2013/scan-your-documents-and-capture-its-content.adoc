@@ -15,7 +15,7 @@ Currently I am working on task to scan documents to PDFs and retrieve their cont
 
 To do so I have use Libre Office Writer and saved the document as PDF. Make sure the document contains the language you try to capture using http://en.wikipedia.org/wiki/OCR[OCR].
 
-=== Step #3 - Use ghostscript to convert the PDF into a 
+=== Step #3 - Use ghostscript to convert the PDF into a multipage TIFF
 
  gs -o multipage-tiffg4.tif -sDEVICE=tiffg4 multipage-input.pdf
 
