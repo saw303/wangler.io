@@ -1,0 +1,130 @@
+title=Browser Automation with Geb, Spock & Gradle
+date=2016-10-31
+type=post
+tags=geb, spock, gradle, testing, groovy, selenium
+status=published
+~~~~~~
+= Browser Automation with Geb, Spock & Gradle
+Silvio Wangler
+2016-10-31
+
+Recently I was asked to do a small intro into the http://www.gebish.org/[Geb]. These are the results of a small workshop I gave
+at http://www.adcubum.com/[Adcubum].
+
+== So what is it?
+
+Geb is a really nice and handy browser automation tool on top http://www.seleniumhq.org/projects/webdriver/[Selenium Webdriver].
+It provides you the full power of Selenium Webdriver. But it adds some nice features such as:
+
+* a much more readable https://en.wikipedia.org/wiki/Domain-specific_language[DSL]
+* http://martinfowler.com/bliki/PageObject.html[Page objects] to structure your test code and make it reusable.
+* Integration with the http://spockframework.org/[Spock Framework]
+
+== And how does it look like?
+
+Page objects help you to encapsulate the content of a specific page and reuse it in serveral test classes.
+In this example `GoogleFrontPage` provides an easy to use identifier for example the Google search input field.
+It also provides you an easy way to click on the Google search button.
+
+[source,groovy]
+.GoogleFrontPage.groovy
+----
+package ch.silviowangler.geb.pages
+
+import geb.Page
+
+/**
+ * @author Silvio Wangler
+ */
+class GoogleFrontPage extends Page {
+
+    static url = '/'
+
+    static at = {
+        title == 'Google'
+    }
+
+    static content = {
+        searchInputField { $("input", name: "q") }
+
+        searchButton { $("button", name: "btnG") }
+
+        searchResultsContainer { $('#sbfrm_l') }
+
+        searchResults { $('h3.r') }
+
+        firstResult { searchResults[0] }
+    }
+}
+----
+
+This enables you as a developer to write much more readable test code by writing commands likely
+
+    to GoogleFrontPage
+
+which tells Geb to browse to `http://www.google.com`. You can then tell Geb to enter some text into
+Googles search input field by writing
+
+    searchInputField.value 'Geb Framework'
+
+and then start the Google search by clicking on the button.
+
+    searchButton.click()
+
+[source,groovy]
+.GoogleSpec.groovy
+----
+import ch.silviowangler.geb.pages.GoogleFrontPage
+import geb.spock.GebReportingSpec
+import spock.lang.Stepwise
+
+@Stepwise
+class GoogleSpec extends GebReportingSpec {
+
+  void "Visit Google.com"() {
+
+    when:
+    to GoogleFrontPage
+
+    then:
+    title == 'Google'
+  }
+
+  void "Make sure the query field is initially empty"() {
+
+    expect: 'The search field is initially empty'
+    searchInputField.text() == ''
+  }
+
+  void "Enter a query"() {
+
+    when: 'Enter "Geb Framework" into the search field'
+    searchInputField.value 'Geb Framework'
+
+    and: 'Click the search button'
+    searchButton.click()
+
+    and: 'wait until the search result element is visible'
+    waitFor { searchResultsContainer.displayed }
+
+    then:
+    title == 'Geb Framework - Google Search'
+
+    and:
+    firstResult.text() == 'Geb - Very Groovy Browser Automation'
+  }
+}
+----
+
+== Where can I get that stuff?
+
+I wrote a small starter tutorial that is hosted at https://github.com/saw303/geb-starter/[GitHub].
+Feel free to clone it and run those tests yourself. Hope you enjoy it.
+
+== I wanna see more!
+
+The workshop was held in german. Therefore the recordings only are available in German language.
+
+video::kZ2fSC7JqUU[youtube]
+video::mJzI11DZC4k[youtube]
+video::2jbG6N0UcBI[youtube]
