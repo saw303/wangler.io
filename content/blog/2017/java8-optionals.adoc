@@ -1,0 +1,93 @@
+title=Using Java 8 Optional
+date=2017-12-05
+type=post
+tags=java, java8
+status=published
+~~~~~~
+= Using Java 8 Optional
+Silvio Wangler
+2017-12-05
+
+:juo: java.util.Optional
+
+Recently I was wondering why IntelliJ IDEA keeps warning me about using `{juo}` as parameters of methods.
+Why can't I use this comfortable wrapper type as input parameters? So I did some research and I would like to share the outcome
+with you.
+
+Let's pretend there is a method signature like as follows
+
+[source, java]
+----
+/**
+* This method simply does something.
+*
+* @param name mandatory name of someone
+* @param age optional age of someone
+*/
+public void doSomething(String name, Optional<Integer> age) {
+   // some mighty code that does something
+}
+----
+
+What could possibly be the problem with that signature that IntelliJ tries to convince me not writing such code?
+
+****
+'Optional<Integer>' used as type for parameter 'age' less... (⌘F1)
+Reports any uses of {juo}<T>, java.util.OptionalDouble, java.util.OptionalInt, java.util.OptionalLong or com.google.common.base.Optional as the type for a field or a parameter.
+Optional was designed to provide a limited mechanism for library method return types where there needed to be a clear way to represent "no result".
+Using a field with type {juo} is also problematic if the class needs to be Serializable, which {juo} is not.
+****
+
+Alright, I understand that I should not use it as a field. But why not using it as an input parameter?
+Is it because it is bad design? Because developers that are calling that method are forced to write something ugly like this?
+
+[source, java]
+----
+obj.doSomething(
+      "Silvio Wangler",
+      Optional.of(new Integer(32)) // <1>
+);
+----
+<1> Ugly because we force the caller to wrap the Integer into a `{juo}`
+
+Take a look at the preceding example. Isn't it an ugly API is it? Well I would not want to code against this API either.
+So this might be the reason why I is not recommended to use {juo} as input parameters in method signatures.
+
+But what is the recommendation? Let's refactor the method for a smoother API. Let's remove that {juo}.
+
+[source, java]
+----
+/**
+* This method simply does something.
+*
+* @param name mandatory name of someone
+* @param age optional age of someone
+*/
+public void doSomething(String name, Integer age) {
+   Objects.requiredNonNull(name); // <1>
+
+   Optional<Integer> possibleAge = Optional.ofNullable(age); // <2>
+
+   possibleAge.ifPresent(System.out::println); // <3>
+}
+----
+<1> Enforce that `name` is mandatory.
+<2> Wrap that optional `age` parameter into an {juo}.
+<3> Only do something with `age` if this is an non null value.
+
+Well that seems to be the way to do it. That way I am not forcing my API callers to write boiler plate code and I as author of
+that method care about the mandatory/optional validation. And in order to provide more convenience to the API user I could even
+overwrite the method `doSomething` and hide this optional parameter.
+
+[source, java]
+----
+/**
+* This method simply does something.
+*
+* @param name mandatory name of someone
+*/
+public void doSomething(String name) {
+   doSomething(name, null); // <1>
+}
+----
+<1> Delegate the call and set age to `null`.
