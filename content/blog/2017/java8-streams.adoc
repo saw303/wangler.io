@@ -1,0 +1,49 @@
+title=Java 8 Streams - Flatten collections
+date=2017-12-12
+type=post
+tags=java, java8
+status=published
+~~~~~~
+= Java 8 Streams - Flatten collections
+Silvio Wangler
+2017-12-12
+
+:jul: java.util.List
+
+Recently I had to find a way to flatten a `{jul}` that contains another `{jul}` using Java 8 streams.
+Let's take the following {jul} `manyLists` as example.
+
+[source, java]
+----
+List<List<String>> manyLists = new ArrayList<>();
+
+manyLists.add(Arrays.asList("A", "B", "C"));
+manyLists.add(Arrays.asList("X", "Y", "Z"));
+manyLists.add(Arrays.asList("1", "2", "3"));
+----
+
+Before Java 8 I would have implemented it maybe like that
+
+[source, java]
+----
+List<String> all = new ArrayList<>();
+
+for (List<String> list: manyLists) {
+  all.addAll(list);
+}
+----
+
+Since we got streams in Java 8 there is another possibly to solve the problem
+
+[source, java]
+----
+List<String> all = manyLists.stream()
+        .flatMap(List::stream) // <1>
+        .collect(Collectors.toList()); // <2>
+
+System.out.println(all);
+----
+<1> flattens the `List<List<String>>` to a stream of `List<String>`
+<2> returns the stream a new list
+
+This results in `[A, B, C, X, Y, Z, 1, 2, 3]`.
