@@ -1,0 +1,33 @@
+title=Split large Git repositories
+date=2018-11-06
+type=post
+tags=git
+status=published
+~~~~~~
+= Split large Git repositories
+Silvio Wangler
+2018-11-06
+
+Go into your big Git repository.
+
+    cd ~/my-big-repo
+
+Use `git subtree split -P <name of the folder in the Git repo> -b feature/split` to move a folder into a new branch.
+
+Then create a new Git repository using
+
+[source, bash]
+----
+mkdir ~/new-repo
+cd ~/new-repo
+git init
+----
+
+Pull the created branch into the new repository with
+
+    git pull ~/my-big-repo feature/split
+
+That’s it. Your new repo has now only the related commit in there.
+
+https://stackoverflow.com/questions/359424/detach-move-subdirectory-into-separate-git-repository/17864475#17864475
+
