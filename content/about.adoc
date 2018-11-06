@@ -6,10 +6,11 @@ status=published
 
 image::saw.jpg[150,150,right]
 
-Hello and welcome. I am a Java, http://www.groovy-lang.org/[Groovy] & http://www.graiks.org/[Grails] software craftsman living in Opfikon, Switzerland. I am working with http://www.adcubum.com[Adcubum].
+Hello and welcome. I am a Java, http://www.groovy-lang.org/[Groovy] & http://www.grails.org/[Grails] software craftsman living in Embrach, Switzerland. I am working with http://www.adcubum.com[Adcubum].
 
 I am author of the following open source projects
 
+* https://github.com/saw303/gradle-java-rest-api[Gradle REST API] - A Gradle plugin the generate Spring Boot or JAX-RS controllers from JSON API contracts.
 * https://github.com/saw303/dox[DOX] - a light weight document management system
 * https://github.com/saw303/grails-ic-alender[iCalendar Plugin for Grails 2 & 3]
 * https://github.com/saw303/grails-flyway[Flyway Plugin for Grails 2 & 3]
