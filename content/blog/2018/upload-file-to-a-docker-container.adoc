@@ -1,0 +1,21 @@
+title=Upload a file to a Docker container
+date=2018-11-06
+type=post
+tags=docker
+status=published
+~~~~~~
+= Upload a file to a Docker container
+Silvio Wangler
+2018-11-06
+
+If you need to upload a file into a running Docker container you can do this as follows
+
+[source, sh]
+----
+cat missing_data.sql | docker exec -i <your container name> sh -c 'cat >/missing_data.sql'
+----
+
+Afterwards the file is located inside the container at `/missing_data.sql`
+
+Have fun!
+
